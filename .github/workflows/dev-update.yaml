@@ -9,6 +9,9 @@ jobs:
   dev-sync:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    environment: dev #env on git
+    permissions:
+        contents: write #
     steps:
       - uses: actions/checkout@v4
       - name: Update Dev Tag
