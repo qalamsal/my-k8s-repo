@@ -7,23 +7,53 @@ on:
     branches: [main]
     types: [closed]
 
+# Define image name using GHCR format
+env:
+    REGISTRY: ghcr.io
+    IMAGE_NAME: ${{ github.repository }}
+
 jobs:
   dev-sync:
-    if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     environment: dev #env on git
     permissions:
-        contents: write #
+        contents: write   # To push Kustomize changes
+        packages: write   # To push the Docker image to GHCR
+    
     steps:
       - uses: actions/checkout@v4
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+            registry: ${{ env.REGISTRY }}
+            username: ${{ github.actor }}
+            password: ${{ secrets.GITHUB_TOKEN }}
+      
+      
+      - name: Build and Push Docker Image
+        run: |
+              # Create short SHA
+              SHORT_SHA=$(echo "${{ github.sha }}" | cut -c1-7)
+              TAG="${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:$SHORT_SHA"
+              
+              echo "Building $TAG..."
+              docker build -t $TAG .
+              docker push $TAG
+              
+              # Store for next step
+              echo "IMAGE_TAG=$TAG" >> $GITHUB_ENV
+              echo "SHORT_SHA=$SHORT_SHA" >> $GITHUB_EN
+    
       - name: Update Dev Tag
         run: |
-          cd overlays/dev
-          # Use the first 7 chars of the merge commit
-          kustomize edit set image nginx=nginx:$(echo ${{ github.sha }} | cut -c1-7)
-          
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@://github.com"
-          git add .
-          git commit -m "Bump Dev to ${{ github.sha }}"
-          git push origin main
+            cd overlays/dev
+            # Update Kustomize with the NEWLY PUSHED image
+            kustomize edit set image nginx=${{ env.IMAGE_TAG }}
+        
+            git config --global user.name "github-actions[bot]"
+            git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add .
+            git commit -m "chore: bump dev to ${{ env.SHORT_SHA }}"
+            git push origin main
