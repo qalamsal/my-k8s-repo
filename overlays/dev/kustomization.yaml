@@ -9,12 +9,12 @@ namePrefix: dev-
 images:
 - name: nginx
   newName: nginx
-  newTag: 27fbc9d
+  newTag: 9bd299f
 patches:
-  - target:
-      kind: Deployment
-      name: my-app
-    patch: |-
-      - op: replace
-        path: /spec/replicas
-        value: 1
+- patch: |-
+    - op: replace
+      path: /spec/replicas
+      value: 1
+  target:
+    kind: Deployment
+    name: my-app
