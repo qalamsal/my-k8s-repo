@@ -1,0 +1,26 @@
+name: Manual Promote to QA
+on:
+  workflow_dispatch: # This creates the manual button in GitHub UI
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Copy Dev Tag to QA
+        run: |
+          # Read the current tag from Dev's kustomization.yaml
+          DEV_TAG=$(grep -A 2 "name: nginx" overlays/dev/kustomization.yaml | grep "newTag" | awk '{print $2}' | tr -d '"')
+          
+          echo "Promoting tag $DEV_TAG to QA..."
+          
+          # Update the QA overlay
+          cd overlays/qa
+          kustomize edit set image nginx=nginx:$DEV_TAG
+          
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@://github.com"
+          git add .
+          git commit -m "Promote $DEV_TAG from Dev to QA"
+          git push origin main

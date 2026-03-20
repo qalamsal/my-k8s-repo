@@ -1,0 +1,23 @@
+name: Update Dev Overlay
+on:
+  pull_request:
+    branches: [main]
+    types: [closed]
+
+jobs:
+  dev-sync:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update Dev Tag
+        run: |
+          cd overlays/dev
+          # Use the first 7 chars of the merge commit
+          kustomize edit set image nginx=nginx:$(echo ${{ github.sha }} | cut -c1-7)
+          
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@://github.com"
+          git add .
+          git commit -m "Bump Dev to ${{ github.sha }}"
+          git push origin main
