@@ -7,7 +7,7 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: <YOUR_REPO_URL>
+    repoURL: https://github.com/qalamsal/my-k8s-repo
     targetRevision: HEAD
     path: overlays/dev
   destination:
