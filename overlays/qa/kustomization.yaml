@@ -1,16 +1,20 @@
-apiVersion: kustomize.config.k8s.io/v1beta1
-kind: Kustomization
-resources:
-  - ../../base
-namePrefix: qa-
-images:
-  - name: nginx
-    newTag: "1.23.1" # Promoting to a newer/verified version
-patches:
-  - target:
-      kind: Deployment
-      name: my-app
-    patch: |-
-      - op: replace
-        path: /spec/replicas
-        value: 2 # QA needs more replicas for testing
+kubectl apply -f - <<EOF
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: my-app-qa
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://github.com/qalamsal/my-k8s-repo
+    targetRevision: HEAD
+    path: overlays/qa
+  destination:
+    server: https://172.18.0.5:6443
+    namespace: qa-env
+  syncPolicy:
+    automated: null  # Manual Sync for promotion
+    syncOptions:
+    - CreateNamespace=true
+EOF
