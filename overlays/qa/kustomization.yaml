@@ -16,4 +16,3 @@ spec:
     automated: null  # Manual Sync for promotion
     syncOptions:
     - CreateNamespace=true
-EOF
