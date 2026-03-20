@@ -9,14 +9,3 @@ namePrefix: dev-
 images:
   - name: nginx
     newTag: "1.21"
-- name: nginx
-  newName: nginx
-  newTag: 27fbc9d
-patches:
-  - target:
-      kind: Deployment
-      name: my-app
-    patch: |-
-      - op: replace
-        path: /spec/replicas
-        value: 1
