@@ -7,6 +7,13 @@ resources:
 namePrefix: dev-
 
 images:
-- name: nginx
-  newName: nginx
-  newTag: f600c6a
+  - name: nginx
+    newTag: "1.21"
+patches:
+  - target:
+      kind: Deployment
+      name: my-app
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 2
