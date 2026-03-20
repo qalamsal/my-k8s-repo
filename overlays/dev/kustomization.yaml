@@ -7,5 +7,6 @@ resources:
 namePrefix: dev-
 
 images:
-  - name: nginx
-    newTag: "1.21"
+- name: nginx
+  newName: nginx
+  newTag: e6d6ab4
