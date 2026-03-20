@@ -1,6 +1,8 @@
 #  only udpate dev pipeline
 name: Update Dev Overlay
 on:
+  workflow_dispatch: # This creates the manual button in GitHub UI
+        
   pull_request:
     branches: [main]
     types: [closed]
