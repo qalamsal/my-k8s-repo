@@ -7,14 +7,5 @@ resources:
 namePrefix: dev-
 
 images:
-- name: nginx
-  newName: nginx
-  newTag: 9bd299f
-patches:
-- patch: |-
-    - op: replace
-      path: /spec/replicas
-      value: 1
-  target:
-    kind: Deployment
-    name: my-app
+  - name: nginx
+    newTag: "1.21"
