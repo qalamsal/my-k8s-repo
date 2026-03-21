@@ -9,7 +9,7 @@ on:
 
 # Define image name using GHCR format
 env:
-    DOCKER_REPO: ${{ secrets.DOCKERHUB_USERNAME }}/my-app
+    DOCKER_REPO: ${{ secrets.DOCKERHUB_USERNAME }}/san-nginx-app
 
 jobs:
   dev-sync:
