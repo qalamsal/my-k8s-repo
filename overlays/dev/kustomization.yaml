@@ -9,4 +9,4 @@ namePrefix: dev-
 images:
 - name: nginx
   newName: sandesh12055/san-nginx-app
-  newTag: e154233
+  newTag: 951b3419128ad63b3d0163fc51cd41a92d079e02
