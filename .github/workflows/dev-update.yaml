@@ -44,12 +44,11 @@ jobs:
       - name: Update Dev Tag
         run: |
           cd overlays/dev
-          SHORT_SHA=${GITHUB_SHA:0:7}
           # Update the kustomize image to match the one pushed above
-          kustomize edit set image nginx=sandesh12055/san-nginx-app:$SHORT_SHA
+          kustomize edit set image nginx=sandesh12055/san-nginx-app:${{ github.sha }}
           
           git config --global user.name "github-actions[bot]"
           git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add .
-          git commit -m "deploy(dev): bump image to $SHORT_SHA [skip ci]"
+          git commit -m "deploy(dev)"
           git push origin main
