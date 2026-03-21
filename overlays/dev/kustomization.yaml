@@ -8,5 +8,5 @@ namePrefix: dev-
 
 images:
 - name: nginx
-  newName: nginx
-  newTag: e6d6ab4
+  newName: sandesh12055/san-nginx-app
+  newTag: e154233
