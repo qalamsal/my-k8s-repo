@@ -9,7 +9,7 @@ namePrefix: dev-
 images:
 - name: nginx
   newName: sandesh12055/san-nginx-app
-  newTag: 39a7ef3f50c2307319ea620ce2b8c5d10fa6d61d
+  newTag: f17430de9e8e4a7bfac878484c27326e7aaa75a9
 
 # Example patch: QA usually needs more replicas than Dev
 patches:
