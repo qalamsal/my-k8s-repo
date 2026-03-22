@@ -5,6 +5,9 @@ on:
 jobs:
   promote:
     runs-on: ubuntu-latest
+    environment: qa #env on git
+    permissions:
+      contents: write   # To push Kustomize changes 
     steps:
       - uses: actions/checkout@v4
       
