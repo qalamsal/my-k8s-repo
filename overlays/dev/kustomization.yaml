@@ -9,3 +9,13 @@ namePrefix: dev-
 images:
   - name: nginx
     newTag: "1.21"
+
+# Example patch: QA usually needs more replicas than Dev
+patches:
+  - target:
+      kind: Deployment
+      name: my-app
+    patch: |-
+      - op: replace
+        path: /spec/replicas
+        value: 3
