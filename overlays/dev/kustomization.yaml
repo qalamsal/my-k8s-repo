@@ -7,15 +7,16 @@ resources:
 namePrefix: dev-
 
 images:
-  - name: nginx
-    newTag: "1.21"
+- name: nginx
+  newName: sandesh12055/san-nginx-app
+  newTag: 39a7ef3f50c2307319ea620ce2b8c5d10fa6d61d
 
 # Example patch: QA usually needs more replicas than Dev
 patches:
-  - target:
-      kind: Deployment
-      name: my-app
-    patch: |-
-      - op: replace
-        path: /spec/replicas
-        value: 3
+- patch: |-
+    - op: replace
+      path: /spec/replicas
+      value: 3
+  target:
+    kind: Deployment
+    name: my-app
